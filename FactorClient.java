@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -15,12 +16,35 @@ public class FactorClient
     private final static BigInteger ZERO = new BigInteger("0");
     private final static BigInteger ONE = new BigInteger("1");
     private final static BigInteger TWO = new BigInteger("2");
+    
+    /*
+     * To Stop logging the time it takes to factor, 
+     * Comment out all the lines of code between the comment tags that looks like this:
+     * 
+     * //TIME LOG
+     * blah blah blah
+     * //TIME LOG
+     * 
+     */
+    private static long start;
+    private static long end;
+    private static double time;
+    
+    //TIME LOG
+    private static File logFile = new File("times.txt");
+    public static PrintWriter log;
+    //TIME LOG
+    
     private final static SecureRandom random = new SecureRandom();
     
     public static String results = "";
     
     private void run() throws IOException 
     {
+    	//TIME LOG
+    	log = new PrintWriter(logFile);
+    	//TIME LOG
+    	
     	System.out.print("Please enter the Server IP: ");
         String serverAddress = sc.nextLine();
         Socket socket = new Socket(serverAddress, 1882);
@@ -38,7 +62,15 @@ public class FactorClient
             {
             	System.out.println("Recieved Number: " + line.substring(6));
             	BigInteger N = new BigInteger(line.substring(6));
+            	start = System.nanoTime();
                 factor(N);
+                end = System.nanoTime();
+                time = ((double)(end-start)/Math.pow(10,9));
+                
+                //TIME LOG
+                log(N.toString() + "," + time);
+                //TIME LOG
+                
                 out.println("RESULTS" + results);
                 System.out.println("Found factor: " + results);
             } 
@@ -52,6 +84,12 @@ public class FactorClient
             	System.exit(0);
             }
         }
+    }
+    
+    public void log(String entry)
+    {
+    	log.println(entry);
+    	log.flush();
     }
     
     public static BigInteger construct(BigInteger N) 

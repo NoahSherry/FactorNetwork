@@ -42,7 +42,7 @@ public class FactorServer
      
     	while(input.hasNextLine())
     	{
-    		numbers.add(new BigInteger(input.nextLine()));
+    		numbers.add(input.nextBigInteger());
     		init++;
     	}
     	input.close();
