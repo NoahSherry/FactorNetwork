@@ -9,16 +9,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * TODO List
- *
- *     1. The protocol should be enhanced so that the client can
- *        send clean disconnect messages to the server.
- *
- *     2. The server should do some logging.
- *     
- *     3. Check for Infinite Number Loop
- */
 public class FactorServer 
 {
     private static final int PORT = 1882;
